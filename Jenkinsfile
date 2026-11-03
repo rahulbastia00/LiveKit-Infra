@@ -8,24 +8,29 @@ pipeline {
     }
 
     stages {
+
         stage('Validate Config') {
             steps {
                 sh '''
-                echo "Generating 32-byte secret and creating mock .env for CI..."
-                CI_SECRET=$(openssl rand -hex 32)
+                    set -e
 
-                cat <<EOF > .env
-                LIVEKIT_API_KEY=ci_key
-                LIVEKIT_API_SECRET=${CI_SECRET}
-                LIVEKIT_URL=ws://localhost:7880
-                NEXT_PUBLIC_SHOW_SETTINGS_MENU=true
-                EOF
+                    echo "Generating temporary CI environment..."
 
-                echo "Validating Compose structure..."
-                docker compose config -q
+                    CI_SECRET=$(openssl rand -hex 32)
 
-                # Clean up temporary CI file
-                rm -f .env
+                    cat > .env <<EOF
+LIVEKIT_API_KEY=ci_key
+LIVEKIT_API_SECRET=${CI_SECRET}
+LIVEKIT_URL=ws://localhost:7880
+NEXT_PUBLIC_SHOW_SETTINGS_MENU=true
+EOF
+
+                    echo "Validating Docker Compose configuration..."
+                    docker compose config -q
+
+                    rm -f .env
+
+                    echo "Docker Compose validation successful."
                 '''
             }
         }
@@ -34,7 +39,16 @@ pipeline {
             steps {
                 dir('client') {
                     sh """
-                    docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest .
+                        set -e
+
+                        echo "Building Docker image..."
+
+                        docker build \
+                            -t ${IMAGE_NAME}:${BUILD_NUMBER} \
+                            -t ${IMAGE_NAME}:latest \
+                            .
+
+                        echo "Docker image built successfully."
                     """
                 }
             }
@@ -43,36 +57,46 @@ pipeline {
         stage('Vulnerability Scan (Trivy)') {
             steps {
                 sh """
-                # 1. Print full scan table in build console
-                docker run --rm \
-                  -v /var/run/docker.sock:/var/run/docker.sock \
-                  -v trivy-cache:/root/.cache/ \
-                  aquasec/trivy:latest image \
-                  --severity HIGH,CRITICAL \
-                  --format table \
-                  ${IMAGE_NAME}:${BUILD_NUMBER}
+                    set -e
 
-                # 2. Enforce quality gate (fails build if unfixed HIGH/CRITICAL CVEs exist)
-                docker run --rm \
-                  -v /var/run/docker.sock:/var/run/docker.sock \
-                  -v trivy-cache:/root/.cache/ \
-                  aquasec/trivy:latest image \
-                  --exit-code 1 \
-                  --severity HIGH,CRITICAL \
-                  --ignore-unfixed \
-                  ${IMAGE_NAME}:${BUILD_NUMBER}
+                    echo "Scanning Docker image for HIGH and CRITICAL vulnerabilities..."
+
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v trivy-cache:/root/.cache/ \
+                        aquasec/trivy:latest image \
+                        --severity HIGH,CRITICAL \
+                        --ignore-unfixed \
+                        --exit-code 1 \
+                        --format table \
+                        ${IMAGE_NAME}:${BUILD_NUMBER}
+
+                    echo "Security scan passed."
                 """
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDS}", passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                    sh """
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    docker push ${IMAGE_NAME}:${BUILD_NUMBER}
-                    docker push ${IMAGE_NAME}:latest
-                    """
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${REGISTRY_CREDS}",
+                        passwordVariable: 'DOCKER_PASS',
+                        usernameVariable: 'DOCKER_USER'
+                    )
+                ]) {
+                    sh '''
+                        set -e
+
+                        echo "$DOCKER_PASS" | docker login \
+                            -u "$DOCKER_USER" \
+                            --password-stdin
+
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
+
+                        echo "Docker images pushed successfully."
+                    '''
                 }
             }
         }
@@ -80,8 +104,18 @@ pipeline {
 
     post {
         always {
-            sh "docker logout || true"
-            sh "docker image prune -f"
+            sh '''
+                docker logout || true
+                docker image prune -f || true
+            '''
+        }
+
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check the stage logs above.'
         }
     }
 }
