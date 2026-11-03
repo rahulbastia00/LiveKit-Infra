@@ -1,0 +1,57 @@
+Jenkins
+docker run -d \
+  --name jenkins \
+  --restart unless-stopped \
+  -u root \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v jenkins_data:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins/jenkins:lts-jdk17
+
+Install Docker CLI inside the running Jenkins container:
+docker exec -u 0 jenkins apt-get update
+docker exec -u 0 jenkins apt-get install -y docker.io
+
+Get the initial admin password:
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+Jenkins URL
+https://fuzzy-space-disco-pjjpr6j4vrrg26r5j-8080.app.github.dev/
+
+Validation Cheaks
+
+Simulate the Jenkins syntax check to confirm your variables parse properly:
+LIVEKIT_API_KEY=ci_key \
+LIVEKIT_API_SECRET=ci_secret \
+LIVEKIT_URL=ws://localhost:7880 \
+docker compose config -q && echo " Compose config is valid"
+
+Manually build the Next.js image using your Dockerfile to verify multi-stage caching and compilation:
+cd client
+docker build -t test-livekit-client:local .
+cd ..
+
+Run the containerized Trivy command directly against the test image you just built:
+
+Bash
+# 1. Human-readable table scan (informational)
+docker run --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v trivy-cache:/root/.cache/ \
+  aquasec/trivy:latest image \
+  --severity HIGH,CRITICAL \
+  --format table \
+  test-livekit-client:local
+
+# 2. Gate check test (returns exit code 1 if unpatched HIGH/CRITICAL issues exist)
+docker run --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v trivy-cache:/root/.cache/ \
+  aquasec/trivy:latest image \
+  --exit-code 1 \
+  --severity HIGH,CRITICAL \
+  --ignore-unfixed \
+  test-livekit-client:local
+
+echo "Exit Code: $?"

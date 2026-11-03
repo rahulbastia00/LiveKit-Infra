@@ -1,13 +1,7 @@
-
 services:
-  # ==========================================
-  # LiveKit media and signaling server
-  # ==========================================
   livekit:
     image: livekit/livekit-server:v1.8
     restart: unless-stopped
-
-    # Generate LiveKit configuration using root .env
     environment:
       LIVEKIT_CONFIG: |
         port: 7880
@@ -19,49 +13,25 @@ services:
           use_external_ip: false
         keys:
           ${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}
-
-    # Expose LiveKit ports to the host
     ports:
       - "7880:7880/tcp"
       - "7881:7881/tcp"
       - "50000-50050:50000-50050/udp"
-
     networks:
       - livekit-net
 
-
-  # ==========================================
-  # Next.js frontend
-  # ==========================================
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-
-      # Build-time variables for Next.js
-      args:
-        NEXT_PUBLIC_SHOW_SETTINGS_MENU: ${NEXT_PUBLIC_SHOW_SETTINGS_MENU:-true}
-
+    image: rahulbastia/livekit-client:latest
     restart: unless-stopped
-
-    # Load variables from the single root .env
     env_file:
-      - ./.env
-
+      - .env
     ports:
       - "3000:3000"
-
-    # Start LiveKit before the frontend
     depends_on:
       - livekit
-
     networks:
       - livekit-net
 
-
-# ==========================================
-# Docker network
-# ==========================================
 networks:
   livekit-net:
     driver: bridge
