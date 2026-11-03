@@ -11,11 +11,21 @@ pipeline {
         stage('Validate Config') {
             steps {
                 sh '''
+                echo "Generating 32-byte secret and creating mock .env for CI..."
+                CI_SECRET=$(openssl rand -hex 32)
+
+                cat <<EOF > .env
+                LIVEKIT_API_KEY=ci_key
+                LIVEKIT_API_SECRET=${CI_SECRET}
+                LIVEKIT_URL=ws://localhost:7880
+                NEXT_PUBLIC_SHOW_SETTINGS_MENU=true
+                EOF
+
                 echo "Validating Compose structure..."
-                LIVEKIT_API_KEY=ci_key \
-                LIVEKIT_API_SECRET=ci_secret \
-                LIVEKIT_URL=ws://localhost:7880 \
                 docker compose config -q
+
+                # Clean up temporary CI file
+                rm -f .env
                 '''
             }
         }
