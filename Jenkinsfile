@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USER = 'YOUR_DOCKERHUB_USERNAME'
+        DOCKERHUB_USER = 'rahulbastia'
         IMAGE_NAME     = "${env.DOCKERHUB_USER}/livekit-client"
         REGISTRY_CREDS = 'dockerhub-credentials'
     }
