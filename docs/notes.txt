@@ -55,3 +55,21 @@ docker run --rm \
   test-livekit-client:local
 
 echo "Exit Code: $?"
+
+Run the output command in your terminal to generate your local kubeconfig context:
+
+Bash
+aws eks --region ap-south-1 update-kubeconfig --name livekit-eks
+Verify that the worker nodes are joined and in the Ready state:
+
+Bash
+kubectl get nodes -o wide
+
+Download and create the official AWS IAM policy:
+
+Bash
+curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json

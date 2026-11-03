@@ -1,8 +1,72 @@
+
+# ==========================================
 # Environment variables and secrets
+# ==========================================
 .env
 .env.*
 !.env.example
+*.pem
+*.key
 
-# Dependencies and build outputs
+# ==========================================
+# Node.js / Next.js
+# ==========================================
 node_modules/
 .next/
+out/
+dist/
+build/
+.turbo/
+coverage/
+.npm/
+.pnpm-store/
+
+# ==========================================
+# Terraform
+# ==========================================
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keep dependency lock file tracked
+!.terraform.lock.hcl
+
+# ==========================================
+# Ansible
+# ==========================================
+*.retry
+inventory
+inventory.ini
+!inventory.example
+!inventory.tmpl
+
+# ==========================================
+# Docker
+# ==========================================
+*.log
+
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# ==========================================
+# IDE / Operating system
+# ==========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
