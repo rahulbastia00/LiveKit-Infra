@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: livekit-server
+  labels:
+    app: livekit-server
+spec:
+  replicas: {{ .Values.livekit.replicaCount }}
+  selector:
+    matchLabels:
+      app: livekit-server
+  template:
+    metadata:
+      labels:
+        app: livekit-server
+    spec:
+      containers:
+        - name: livekit
+          image: "{{ .Values.livekit.image.repository }}:{{ .Values.livekit.image.tag }}"
+          imagePullPolicy: {{ .Values.livekit.image.pullPolicy }}
+          command: ["livekit-server"]
+          args: ["--config", "/etc/livekit.yaml"]
+          ports:
+            - name: http
+              containerPort: {{ .Values.livekit.ports.http }}
+              protocol: TCP
+            - name: tcprtc
+              containerPort: {{ .Values.livekit.ports.tcpRtc }}
+              protocol: TCP
+            - name: udprtc
+              containerPort: {{ .Values.livekit.ports.udpStart }}
+              protocol: UDP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/livekit.yaml
+              subPath: livekit.yaml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: livekit-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: livekit-config
+data:
+  livekit.yaml: |
+    port: {{ .Values.livekit.ports.http }}
+    log_level: info
+    rtc:
+      tcp_port: {{ .Values.livekit.ports.tcpRtc }}
+      port_range_start: {{ .Values.livekit.ports.udpStart }}
+      port_range_end: {{ .Values.livekit.ports.udpEnd }}
+      use_external_ip: false
+    keys:
+      {{- range $key, $val := .Values.livekit.keys }}
+      {{ $key }}: {{ $val }}
+      {{- end }}
