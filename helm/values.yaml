@@ -10,6 +10,10 @@ client:
   service:
     port: 3000
   env:
+    LIVEKIT_URL: "ws://localhost:7880"
+    NEXT_PUBLIC_LK_SERVER_URL: "ws://localhost:7880"
+    LIVEKIT_API_KEY: "devkey"
+    LIVEKIT_API_SECRET: "534e0f2e83341cbc1af037a564717c47bb6843a0995bf04da27f2a0c01324ebe"
     NEXT_PUBLIC_SHOW_SETTINGS_MENU: "true"
 
 # ==========================================
@@ -28,9 +32,19 @@ livekit:
     tcpRtc: 7881
     udpStart: 50000
     udpEnd: 50050
+  rtc:
+    nodeIp: "127.0.0.1"
+    useExternalIp: false
 
 # ==========================================
-# Ingress (ALB for HTTP & WebSockets)
+# Ingress (ALB for HTTP & WebSockets on AWS)
 # ==========================================
 ingress:
-  enabled: true
+  enabled: false
+
+# ==========================================
+# LoadBalancer (NLB for Media on AWS)
+# Disabled locally to prevent port collisions with hostNetwork
+# ==========================================
+loadBalancer:
+  enabled: false

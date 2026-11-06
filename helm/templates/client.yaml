@@ -5,7 +5,7 @@ metadata:
   labels:
     app: livekit-client
 spec:
-  replicas: {{ .Values.client.replicaCount }}
+  replicas: {{ .Values.client.replicaCount | default 1 }}
   selector:
     matchLabels:
       app: livekit-client
@@ -14,26 +14,36 @@ spec:
       labels:
         app: livekit-client
     spec:
+      restartPolicy: Always
       containers:
         - name: client
           image: "{{ .Values.client.image.repository }}:{{ .Values.client.image.tag }}"
-          imagePullPolicy: {{ .Values.client.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.client.image.pullPolicy | default "IfNotPresent" }}
           ports:
             - name: http
-              containerPort: {{ .Values.client.service.port }}
+              containerPort: {{ .Values.client.service.port | default 3000 }}
           env:
+            - name: LIVEKIT_URL
+              value: {{ .Values.client.env.LIVEKIT_URL | default "ws://localhost:7880" | quote }}
+            - name: NEXT_PUBLIC_LK_SERVER_URL
+              value: {{ .Values.client.env.NEXT_PUBLIC_LK_SERVER_URL | default "ws://localhost:7880" | quote }}
+            - name: LIVEKIT_API_KEY
+              value: {{ .Values.client.env.LIVEKIT_API_KEY | default "devkey" | quote }}
+            - name: LIVEKIT_API_SECRET
+              value: {{ .Values.client.env.LIVEKIT_API_SECRET | default "534e0f2e83341cbc1af037a564717c47bb6843a0995bf04da27f2a0c01324ebe" | quote }}
             - name: NEXT_PUBLIC_SHOW_SETTINGS_MENU
-              value: "{{ .Values.client.env.NEXT_PUBLIC_SHOW_SETTINGS_MENU }}"
+              value: {{ .Values.client.env.NEXT_PUBLIC_SHOW_SETTINGS_MENU | default "true" | quote }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: livekit-client
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: livekit-client
   ports:
-    - port: {{ .Values.client.service.port }}
-      targetPort: http
+    - name: http
+      port: {{ .Values.client.service.port | default 3000 }}
+      targetPort: {{ .Values.client.service.port | default 3000 }}
       protocol: TCP

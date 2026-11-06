@@ -1,21 +1,19 @@
+{{- if and .Values.loadBalancer .Values.loadBalancer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: livekit-media-nlb
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "external"
-    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "instance"
-    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+  name: livekit-media-lb
 spec:
   type: LoadBalancer
   selector:
     app: livekit-server
   ports:
     - name: udp-media
-      port: 50000
-      targetPort: 50000
+      port: {{ .Values.livekit.ports.udpStart | default 50000 }}
+      targetPort: {{ .Values.livekit.ports.udpStart | default 50000 }}
       protocol: UDP
     - name: tcp-signaling
-      port: 7880
-      targetPort: 7880
+      port: {{ .Values.livekit.ports.http | default 7880 }}
+      targetPort: {{ .Values.livekit.ports.http | default 7880 }}
       protocol: TCP
+{{- end }}

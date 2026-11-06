@@ -5,7 +5,9 @@ metadata:
   labels:
     app: livekit-server
 spec:
-  replicas: {{ .Values.livekit.replicaCount }}
+  replicas: {{ .Values.livekit.replicaCount | default 1 }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: livekit-server
@@ -14,11 +16,14 @@ spec:
       labels:
         app: livekit-server
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      restartPolicy: Always
       containers:
         - name: livekit
           image: "{{ .Values.livekit.image.repository }}:{{ .Values.livekit.image.tag }}"
-          imagePullPolicy: {{ .Values.livekit.image.pullPolicy }}
-          command: ["livekit-server"]
+          imagePullPolicy: {{ .Values.livekit.image.pullPolicy | default "IfNotPresent" }}
+          command: ["/livekit-server"]
           args: ["--config", "/etc/livekit.yaml"]
           ports:
             - name: http
@@ -51,7 +56,8 @@ data:
       tcp_port: {{ .Values.livekit.ports.tcpRtc }}
       port_range_start: {{ .Values.livekit.ports.udpStart }}
       port_range_end: {{ .Values.livekit.ports.udpEnd }}
-      use_external_ip: false
+      use_external_ip: {{ .Values.livekit.rtc.useExternalIp | default false }}
+      node_ip: {{ .Values.livekit.rtc.nodeIp | default "127.0.0.1" | quote }}
     keys:
       {{- range $key, $val := .Values.livekit.keys }}
       {{ $key }}: {{ $val }}

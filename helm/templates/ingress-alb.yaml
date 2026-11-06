@@ -1,3 +1,4 @@
+{{- if and .Values.ingress .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -17,4 +18,5 @@ spec:
               service:
                 name: livekit-client
                 port:
-                  number: 3000
+                  number: {{ .Values.client.service.port | default 3000 }}
+{{- end }}
