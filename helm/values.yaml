@@ -32,6 +32,7 @@ livekit:
     tcpRtc: 7881
     udpStart: 50000
     udpEnd: 50050
+    prometheus: 6789
   rtc:
     nodeIp: "127.0.0.1"
     useExternalIp: false

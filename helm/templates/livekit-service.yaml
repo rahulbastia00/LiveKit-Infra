@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: livekit-server
+  labels:
+    app: livekit-server
+spec:
+  selector:
+    app: livekit-server
+  ports:
+    - name: http-metrics
+      port: 7880
+      targetPort: {{ .Values.livekit.ports.prometheus | default 6789 }}
+    - name: metrics
+      port: {{ .Values.livekit.ports.prometheus | default 6789 }}
+      targetPort: {{ .Values.livekit.ports.prometheus | default 6789 }}

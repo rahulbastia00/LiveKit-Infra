@@ -1,0 +1,385 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  livekit-sfu-dashboard.json: "{\n  \"annotations\": { \"list\": [] },\n  \"editable\"\
+    : true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 1,\n  \"id\": null,\n\
+    \  \"links\": [],\n  \"liveNow\": false,\n  \"panels\": [\n    {\n      \"collapsed\"\
+    : false,\n      \"gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 0 },\n  \
+    \    \"id\": 100,\n      \"title\": \"LiveKit SFU Real-Time Operational Overview\"\
+    ,\n      \"type\": \"row\"\n    },\n    {\n      \"datasource\": { \"type\": \"\
+    prometheus\", \"uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"\
+    defaults\": {\n          \"color\": { \"mode\": \"thresholds\" },\n          \"\
+    mappings\": [],\n          \"thresholds\": {\n            \"mode\": \"absolute\"\
+    ,\n            \"steps\": [\n              { \"color\": \"blue\", \"value\": null\
+    \ },\n              { \"color\": \"green\", \"value\": 1 }\n            ]\n  \
+    \        },\n          \"unit\": \"none\"\n        },\n        \"overrides\":\
+    \ []\n      },\n      \"gridPos\": { \"h\": 4, \"w\": 4, \"x\": 0, \"y\": 1 },\n\
+    \      \"id\": 1,\n      \"options\": {\n        \"colorMode\": \"value\",\n \
+    \       \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\",\n       \
+    \ \"orientation\": \"auto\",\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"\
+    ], \"fields\": \"\", \"values\": false },\n        \"textMode\": \"auto\"\n  \
+    \    },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"max(livekit_room_total)\
+    \ or vector(0)\",\n          \"legendFormat\": \"Active Rooms\",\n          \"\
+    range\": true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\"\
+    : \"Active Rooms\",\n      \"type\": \"stat\"\n    },\n    {\n      \"datasource\"\
+    : { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": { \"mode\": \"thresholds\"\
+    \ },\n          \"mappings\": [],\n          \"thresholds\": {\n            \"\
+    mode\": \"absolute\",\n            \"steps\": [\n              { \"color\": \"\
+    blue\", \"value\": null },\n              { \"color\": \"green\", \"value\": 1\
+    \ },\n              { \"color\": \"yellow\", \"value\": 10 }\n            ]\n\
+    \          },\n          \"unit\": \"none\"\n        },\n        \"overrides\"\
+    : []\n      },\n      \"gridPos\": { \"h\": 4, \"w\": 4, \"x\": 4, \"y\": 1 },\n\
+    \      \"id\": 2,\n      \"options\": {\n        \"colorMode\": \"value\",\n \
+    \       \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\",\n       \
+    \ \"orientation\": \"auto\",\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"\
+    ], \"fields\": \"\", \"values\": false },\n        \"textMode\": \"auto\"\n  \
+    \    },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"max(livekit_participant_total)\
+    \ or vector(0)\",\n          \"legendFormat\": \"Participants\",\n          \"\
+    range\": true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\"\
+    : \"Connected Participants\",\n      \"type\": \"stat\"\n    },\n    {\n     \
+    \ \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n   \
+    \   \"fieldConfig\": {\n        \"defaults\": {\n          \"color\": { \"mode\"\
+    : \"thresholds\" },\n          \"mappings\": [],\n          \"thresholds\": {\n\
+    \            \"mode\": \"absolute\",\n            \"steps\": [\n             \
+    \ { \"color\": \"green\", \"value\": null },\n              { \"color\": \"yellow\"\
+    , \"value\": 1 },\n              { \"color\": \"red\", \"value\": 5 }\n      \
+    \      ]\n          },\n          \"unit\": \"percent\"\n        },\n        \"\
+    overrides\": []\n      },\n      \"gridPos\": { \"h\": 4, \"w\": 4, \"x\": 8,\
+    \ \"y\": 1 },\n      \"id\": 3,\n      \"options\": {\n        \"colorMode\":\
+    \ \"value\",\n        \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\"\
+    ,\n        \"orientation\": \"auto\",\n        \"reduceOptions\": { \"calcs\"\
+    : [\"lastNotNull\"], \"fields\": \"\", \"values\": false },\n        \"textMode\"\
+    : \"auto\"\n      },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\"\
+    : [\n        {\n          \"datasource\": { \"type\": \"prometheus\", \"uid\"\
+    : \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"expr\":\
+    \ \"avg(livekit_node_dropped_packets) or vector(0)\",\n          \"legendFormat\"\
+    : \"Packet Loss\",\n          \"range\": true,\n          \"refId\": \"A\"\n \
+    \       }\n      ],\n      \"title\": \"Dropped Packets %\",\n      \"type\":\
+    \ \"stat\"\n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\", \"\
+    uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"color\": { \"mode\": \"palette-classic\" },\n          \"mappings\"\
+    : [],\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n    \
+    \        \"steps\": [{ \"color\": \"green\", \"value\": null }]\n          },\n\
+    \          \"unit\": \"Bps\"\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": { \"h\": 4, \"w\": 6, \"x\": 12, \"y\": 1 },\n      \"id\"\
+    : 4,\n      \"options\": {\n        \"colorMode\": \"value\",\n        \"graphMode\"\
+    : \"area\",\n        \"justifyMode\": \"auto\",\n        \"orientation\": \"auto\"\
+    ,\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"], \"fields\": \"\"\
+    , \"values\": false },\n        \"textMode\": \"auto\"\n      },\n      \"pluginVersion\"\
+    : \"10.4.2\",\n      \"targets\": [\n        {\n          \"datasource\": { \"\
+    type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\":\
+    \ \"code\",\n          \"expr\": \"sum(rate(livekit_packet_bytes{direction=\\\"\
+    incoming\\\"}[1m])) or vector(0)\",\n          \"legendFormat\": \"Ingress Rate\"\
+    ,\n          \"range\": true,\n          \"refId\": \"A\"\n        }\n      ],\n\
+    \      \"title\": \"Track Ingress Rate\",\n      \"type\": \"stat\"\n    },\n\
+    \    {\n      \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"color\":\
+    \ { \"mode\": \"palette-classic\" },\n          \"mappings\": [],\n          \"\
+    thresholds\": {\n            \"mode\": \"absolute\",\n            \"steps\": [{\
+    \ \"color\": \"green\", \"value\": null }]\n          },\n          \"unit\":\
+    \ \"Bps\"\n        },\n        \"overrides\": []\n      },\n      \"gridPos\"\
+    : { \"h\": 4, \"w\": 6, \"x\": 18, \"y\": 1 },\n      \"id\": 5,\n      \"options\"\
+    : {\n        \"colorMode\": \"value\",\n        \"graphMode\": \"area\",\n   \
+    \     \"justifyMode\": \"auto\",\n        \"orientation\": \"auto\",\n       \
+    \ \"reduceOptions\": { \"calcs\": [\"lastNotNull\"], \"fields\": \"\", \"values\"\
+    : false },\n        \"textMode\": \"auto\"\n      },\n      \"pluginVersion\"\
+    : \"10.4.2\",\n      \"targets\": [\n        {\n          \"datasource\": { \"\
+    type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\":\
+    \ \"code\",\n          \"expr\": \"sum(rate(livekit_packet_bytes{direction=\\\"\
+    outgoing\\\"}[1m])) or vector(0)\",\n          \"legendFormat\": \"Egress Rate\"\
+    ,\n          \"range\": true,\n          \"refId\": \"A\"\n        }\n      ],\n\
+    \      \"title\": \"Track Egress Rate\",\n      \"type\": \"stat\"\n    },\n \
+    \   {\n      \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
+    : {\n            \"drawStyle\": \"line\",\n            \"lineInterpolation\":\
+    \ \"smooth\",\n            \"lineWidth\": 2,\n            \"fillOpacity\": 15\n\
+    \          },\n          \"unit\": \"Bps\"\n        },\n        \"overrides\"\
+    : []\n      },\n      \"gridPos\": { \"h\": 8, \"w\": 12, \"x\": 0, \"y\": 5 },\n\
+    \      \"id\": 6,\n      \"options\": {\n        \"legend\": { \"displayMode\"\
+    : \"list\", \"placement\": \"bottom\" },\n        \"tooltip\": { \"mode\": \"\
+    single\" }\n      },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\"\
+    : [\n        {\n          \"datasource\": { \"type\": \"prometheus\", \"uid\"\
+    : \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"expr\":\
+    \ \"sum(rate(livekit_packet_bytes{direction=\\\"incoming\\\"}[1m]))\",\n     \
+    \     \"legendFormat\": \"Ingress (Incoming Bytes/s)\",\n          \"range\":\
+    \ true,\n          \"refId\": \"A\"\n        },\n        {\n          \"datasource\"\
+    : { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"sum(rate(livekit_packet_bytes{direction=\\\"\
+    outgoing\\\"}[1m]))\",\n          \"legendFormat\": \"Egress (Outgoing Bytes/s)\"\
+    ,\n          \"range\": true,\n          \"refId\": \"B\"\n        }\n      ],\n\
+    \      \"title\": \"Ingress & Egress Network Bandwidth (Rate)\",\n      \"type\"\
+    : \"timeseries\"\n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\":\
+    \ {\n          \"custom\": {\n            \"drawStyle\": \"line\",\n         \
+    \   \"lineInterpolation\": \"smooth\",\n            \"lineWidth\": 2,\n      \
+    \      \"fillOpacity\": 15\n          },\n          \"unit\": \"pps\"\n      \
+    \  },\n        \"overrides\": []\n      },\n      \"gridPos\": { \"h\": 8, \"\
+    w\": 12, \"x\": 12, \"y\": 5 },\n      \"id\": 7,\n      \"options\": {\n    \
+    \    \"legend\": { \"displayMode\": \"list\", \"placement\": \"bottom\" },\n \
+    \       \"tooltip\": { \"mode\": \"single\" }\n      },\n      \"pluginVersion\"\
+    : \"10.4.2\",\n      \"targets\": [\n        {\n          \"datasource\": { \"\
+    type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\":\
+    \ \"code\",\n          \"expr\": \"sum(rate(livekit_packet_total{direction=\\\"\
+    incoming\\\"}[1m]))\",\n          \"legendFormat\": \"Incoming Packets/s\",\n\
+    \          \"range\": true,\n          \"refId\": \"A\"\n        },\n        {\n\
+    \          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"sum(rate(livekit_packet_total{direction=\\\
+    \"outgoing\\\"}[1m]))\",\n          \"legendFormat\": \"Outgoing Packets/s\",\n\
+    \          \"range\": true,\n          \"refId\": \"B\"\n        },\n        {\n\
+    \          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"sum(rate(livekit_packet_total{transmission=\\\
+    \"retransmit\\\"}[1m]))\",\n          \"legendFormat\": \"Retransmitted Packets/s\"\
+    ,\n          \"range\": true,\n          \"refId\": \"C\"\n        }\n      ],\n\
+    \      \"title\": \"Packet Rate & Retransmissions (WebRTC)\",\n      \"type\"\
+    : \"timeseries\"\n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\":\
+    \ {\n          \"custom\": {\n            \"drawStyle\": \"line\",\n         \
+    \   \"lineInterpolation\": \"linear\",\n            \"lineWidth\": 2\n       \
+    \   },\n          \"unit\": \"s\"\n        },\n        \"overrides\": []\n   \
+    \   },\n      \"gridPos\": { \"h\": 7, \"w\": 12, \"x\": 0, \"y\": 13 },\n   \
+    \   \"id\": 8,\n      \"options\": {\n        \"legend\": { \"displayMode\": \"\
+    list\", \"placement\": \"bottom\" },\n        \"tooltip\": { \"mode\": \"single\"\
+    \ }\n      },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n  \
+    \      {\n          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"livekit_forward_latency\"\
+    ,\n          \"legendFormat\": \"Forward Latency ({{node_id}})\",\n          \"\
+    range\": true,\n          \"refId\": \"A\"\n        },\n        {\n          \"\
+    datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n       \
+    \   \"editorMode\": \"code\",\n          \"expr\": \"livekit_forward_jitter\"\
+    ,\n          \"legendFormat\": \"Forward Jitter ({{node_id}})\",\n          \"\
+    range\": true,\n          \"refId\": \"B\"\n        }\n      ],\n      \"title\"\
+    : \"Forward Latency & Jitter\",\n      \"type\": \"timeseries\"\n    },\n    {\n\
+    \      \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n\
+    \      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {\n\
+    \            \"drawStyle\": \"line\",\n            \"lineInterpolation\": \"stepAfter\"\
+    ,\n            \"lineWidth\": 2\n          },\n          \"unit\": \"none\"\n\
+    \        },\n        \"overrides\": []\n      },\n      \"gridPos\": { \"h\":\
+    \ 7, \"w\": 12, \"x\": 12, \"y\": 13 },\n      \"id\": 9,\n      \"options\":\
+    \ {\n        \"legend\": { \"displayMode\": \"list\", \"placement\": \"bottom\"\
+    \ },\n        \"tooltip\": { \"mode\": \"single\" }\n      },\n      \"pluginVersion\"\
+    : \"10.4.2\",\n      \"targets\": [\n        {\n          \"datasource\": { \"\
+    type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\":\
+    \ \"code\",\n          \"expr\": \"livekit_participant_total\",\n          \"\
+    legendFormat\": \"Participants\",\n          \"range\": true,\n          \"refId\"\
+    : \"A\"\n        },\n        {\n          \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"\
+    expr\": \"livekit_room_total\",\n          \"legendFormat\": \"Rooms\",\n    \
+    \      \"range\": true,\n          \"refId\": \"B\"\n        }\n      ],\n   \
+    \   \"title\": \"Rooms & Participants Trend\",\n      \"type\": \"timeseries\"\
+    \n    }\n  ],\n  \"refresh\": \"10s\",\n  \"schemaVersion\": 38,\n  \"tags\":\
+    \ [\"livekit\", \"sfu\", \"webrtc\", \"production\"],\n  \"time\": { \"from\"\
+    : \"now-30m\", \"to\": \"now\" },\n  \"timepicker\": { \"refresh_intervals\":\
+    \ [\"5s\", \"10s\", \"30s\", \"1m\"] },\n  \"timezone\": \"browser\",\n  \"title\"\
+    : \"LiveKit SFU - Real-Time Operational Dashboard\",\n  \"uid\": \"livekit-sfu-operational\"\
+    ,\n  \"version\": 1\n}\n"
+  cluster-performance-dashboard.json: "{\n  \"annotations\": { \"list\": [] },\n \
+    \ \"editable\": true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 1,\n\
+    \  \"id\": null,\n  \"links\": [],\n  \"liveNow\": false,\n  \"panels\": [\n \
+    \   {\n      \"collapsed\": false,\n      \"gridPos\": { \"h\": 1, \"w\": 24,\
+    \ \"x\": 0, \"y\": 0 },\n      \"id\": 100,\n      \"title\": \"Cluster Node Resource\
+    \ Overview\",\n      \"type\": \"row\"\n    },\n    {\n      \"datasource\": {\
+    \ \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": { \"mode\": \"thresholds\"\
+    \ },\n          \"mappings\": [],\n          \"max\": 100,\n          \"min\"\
+    : 0,\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n     \
+    \       \"steps\": [\n              { \"color\": \"green\", \"value\": null },\n\
+    \              { \"color\": \"orange\", \"value\": 70 },\n              { \"color\"\
+    : \"red\", \"value\": 85 }\n            ]\n          },\n          \"unit\": \"\
+    percent\"\n        },\n        \"overrides\": []\n      },\n      \"gridPos\"\
+    : { \"h\": 5, \"w\": 6, \"x\": 0, \"y\": 1 },\n      \"id\": 1,\n      \"options\"\
+    : {\n        \"minVizHeight\": 75,\n        \"minVizWidth\": 75,\n        \"orientation\"\
+    : \"auto\",\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"], \"fields\"\
+    : \"\", \"values\": false },\n        \"showThresholdLabels\": false,\n      \
+    \  \"showThresholdMarkers\": true\n      },\n      \"pluginVersion\": \"10.4.2\"\
+    ,\n      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"\
+    expr\": \"100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\\\"idle\\\
+    \"}[1m])) * 100)\",\n          \"legendFormat\": \"Node CPU\",\n          \"range\"\
+    : true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"\
+    Node CPU Utilization\",\n      \"type\": \"gauge\"\n    },\n    {\n      \"datasource\"\
+    : { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": { \"mode\": \"thresholds\"\
+    \ },\n          \"mappings\": [],\n          \"max\": 100,\n          \"min\"\
+    : 0,\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n     \
+    \       \"steps\": [\n              { \"color\": \"green\", \"value\": null },\n\
+    \              { \"color\": \"orange\", \"value\": 75 },\n              { \"color\"\
+    : \"red\", \"value\": 90 }\n            ]\n          },\n          \"unit\": \"\
+    percent\"\n        },\n        \"overrides\": []\n      },\n      \"gridPos\"\
+    : { \"h\": 5, \"w\": 6, \"x\": 6, \"y\": 1 },\n      \"id\": 2,\n      \"options\"\
+    : {\n        \"minVizHeight\": 75,\n        \"minVizWidth\": 75,\n        \"orientation\"\
+    : \"auto\",\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"], \"fields\"\
+    : \"\", \"values\": false },\n        \"showThresholdLabels\": false,\n      \
+    \  \"showThresholdMarkers\": true\n      },\n      \"pluginVersion\": \"10.4.2\"\
+    ,\n      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"\
+    expr\": \"((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes)\
+    \ * 100\",\n          \"legendFormat\": \"Node RAM\",\n          \"range\": true,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"Node Memory\
+    \ Utilization\",\n      \"type\": \"gauge\"\n    },\n    {\n      \"datasource\"\
+    : { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": { \"mode\": \"thresholds\"\
+    \ },\n          \"mappings\": [],\n          \"thresholds\": {\n            \"\
+    mode\": \"absolute\",\n            \"steps\": [\n              { \"color\": \"\
+    red\", \"value\": null },\n              { \"color\": \"orange\", \"value\": 10737418240\
+    \ },\n              { \"color\": \"green\", \"value\": 21474836480 }\n       \
+    \     ]\n          },\n          \"unit\": \"bytes\"\n        },\n        \"overrides\"\
+    : []\n      },\n      \"gridPos\": { \"h\": 5, \"w\": 6, \"x\": 12, \"y\": 1 },\n\
+    \      \"id\": 3,\n      \"options\": {\n        \"colorMode\": \"value\",\n \
+    \       \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\",\n       \
+    \ \"orientation\": \"auto\",\n        \"reduceOptions\": { \"calcs\": [\"lastNotNull\"\
+    ], \"fields\": \"\", \"values\": false },\n        \"textMode\": \"auto\"\n  \
+    \    },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"node_filesystem_avail_bytes{mountpoint=\\\
+    \"/\\\"}\",\n          \"legendFormat\": \"Free Disk\",\n          \"range\":\
+    \ true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"\
+    Disk Space Available (/)\",\n      \"type\": \"stat\"\n    },\n    {\n      \"\
+    datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n      \"\
+    fieldConfig\": {\n        \"defaults\": {\n          \"color\": { \"mode\": \"\
+    thresholds\" },\n          \"mappings\": [],\n          \"thresholds\": {\n  \
+    \          \"mode\": \"absolute\",\n            \"steps\": [\n              {\
+    \ \"color\": \"blue\", \"value\": null },\n              { \"color\": \"green\"\
+    , \"value\": 1 }\n            ]\n          },\n          \"unit\": \"none\"\n\
+    \        },\n        \"overrides\": []\n      },\n      \"gridPos\": { \"h\":\
+    \ 5, \"w\": 6, \"x\": 18, \"y\": 1 },\n      \"id\": 4,\n      \"options\": {\n\
+    \        \"colorMode\": \"value\",\n        \"graphMode\": \"area\",\n       \
+    \ \"justifyMode\": \"auto\",\n        \"orientation\": \"auto\",\n        \"reduceOptions\"\
+    : { \"calcs\": [\"lastNotNull\"], \"fields\": \"\", \"values\": false },\n   \
+    \     \"textMode\": \"auto\"\n      },\n      \"pluginVersion\": \"10.4.2\",\n\
+    \      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n          \"editorMode\": \"code\",\n          \"\
+    expr\": \"count(container_cpu_usage_seconds_total{container=\\\"POD\\\"}) or vector(0)\"\
+    ,\n          \"legendFormat\": \"Running Pods\",\n          \"range\": true,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"Active Pods\
+    \ Count\",\n      \"type\": \"stat\"\n    },\n    {\n      \"collapsed\": false,\n\
+    \      \"gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 6 },\n      \"id\"\
+    : 101,\n      \"title\": \"Container Metrics & Pod Restarts\",\n      \"type\"\
+    : \"row\"\n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\", \"\
+    uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"custom\": {\n            \"drawStyle\": \"line\",\n            \"\
+    lineInterpolation\": \"smooth\",\n            \"lineWidth\": 2,\n            \"\
+    fillOpacity\": 10\n          },\n          \"unit\": \"cores\"\n        },\n \
+    \       \"overrides\": []\n      },\n      \"gridPos\": { \"h\": 8, \"w\": 12,\
+    \ \"x\": 0, \"y\": 7 },\n      \"id\": 5,\n      \"options\": {\n        \"legend\"\
+    : { \"displayMode\": \"table\", \"placement\": \"bottom\", \"calcs\": [\"lastNotNull\"\
+    , \"max\"] },\n        \"tooltip\": { \"mode\": \"single\" }\n      },\n     \
+    \ \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n        {\n          \"\
+    datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\" },\n       \
+    \   \"editorMode\": \"code\",\n          \"expr\": \"topk(10, sum by (pod) (rate(container_cpu_usage_seconds_total{pod!=\\\
+    \"\\\", container!=\\\"POD\\\", container!=\\\"\\\"}[1m])))\",\n          \"legendFormat\"\
+    : \"{{pod}}\",\n          \"range\": true,\n          \"refId\": \"A\"\n     \
+    \   }\n      ],\n      \"title\": \"Container CPU Usage by Pod\",\n      \"type\"\
+    : \"timeseries\"\n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\"\
+    , \"uid\": \"prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\":\
+    \ {\n          \"custom\": {\n            \"drawStyle\": \"line\",\n         \
+    \   \"lineInterpolation\": \"smooth\",\n            \"lineWidth\": 2,\n      \
+    \      \"fillOpacity\": 10\n          },\n          \"unit\": \"bytes\"\n    \
+    \    },\n        \"overrides\": []\n      },\n      \"gridPos\": { \"h\": 8, \"\
+    w\": 12, \"x\": 12, \"y\": 7 },\n      \"id\": 6,\n      \"options\": {\n    \
+    \    \"legend\": { \"displayMode\": \"table\", \"placement\": \"bottom\", \"calcs\"\
+    : [\"lastNotNull\", \"max\"] },\n        \"tooltip\": { \"mode\": \"single\" }\n\
+    \      },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n      \
+    \  {\n          \"datasource\": { \"type\": \"prometheus\", \"uid\": \"prometheus\"\
+    \ },\n          \"editorMode\": \"code\",\n          \"expr\": \"topk(10, sum\
+    \ by (pod) (container_memory_working_set_bytes{pod!=\\\"\\\", container!=\\\"\
+    POD\\\", container!=\\\"\\\"}))\",\n          \"legendFormat\": \"{{pod}}\",\n\
+    \          \"range\": true,\n          \"refId\": \"A\"\n        }\n      ],\n\
+    \      \"title\": \"Container Memory Working Set\",\n      \"type\": \"timeseries\"\
+    \n    },\n    {\n      \"datasource\": { \"type\": \"prometheus\", \"uid\": \"\
+    prometheus\" },\n      \"fieldConfig\": {\n        \"defaults\": {\n         \
+    \ \"custom\": {\n            \"drawStyle\": \"bars\",\n            \"lineWidth\"\
+    : 1,\n            \"fillOpacity\": 80\n          },\n          \"unit\": \"none\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": { \"h\"\
+    : 7, \"w\": 24, \"x\": 0, \"y\": 15 },\n      \"id\": 7,\n      \"options\": {\n\
+    \        \"legend\": { \"displayMode\": \"list\", \"placement\": \"bottom\" },\n\
+    \        \"tooltip\": { \"mode\": \"single\" }\n      },\n      \"pluginVersion\"\
+    : \"10.4.2\",\n      \"targets\": [\n        {\n          \"datasource\": { \"\
+    type\": \"prometheus\", \"uid\": \"prometheus\" },\n          \"editorMode\":\
+    \ \"code\",\n          \"expr\": \"sum by (pod) (changes(container_start_time_seconds{pod!=\\\
+    \"\\\", container!=\\\"POD\\\", container!=\\\"\\\"}[1h])) > 0\",\n          \"\
+    legendFormat\": \"{{pod}} Restarts\",\n          \"range\": true,\n          \"\
+    refId\": \"A\"\n        }\n      ],\n      \"title\": \"Pod Restarts (Last 1h)\"\
+    ,\n      \"type\": \"timeseries\"\n    }\n  ],\n  \"refresh\": \"15s\",\n  \"\
+    schemaVersion\": 38,\n  \"tags\": [\"kubernetes\", \"node\", \"containers\", \"\
+    performance\"],\n  \"time\": { \"from\": \"now-1h\", \"to\": \"now\" },\n  \"\
+    timepicker\": { \"refresh_intervals\": [\"10s\", \"15s\", \"30s\", \"1m\"] },\n\
+    \  \"timezone\": \"browser\",\n  \"title\": \"Cluster Node & Container Performance\
+    \ Dashboard\",\n  \"uid\": \"cluster-node-container-perf\",\n  \"version\": 1\n\
+    }\n"
+  unified-log-explorer-dashboard.json: "{\n  \"annotations\": { \"list\": [] },\n\
+    \  \"editable\": true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 1,\n\
+    \  \"id\": null,\n  \"links\": [],\n  \"liveNow\": true,\n  \"panels\": [\n  \
+    \  {\n      \"collapsed\": false,\n      \"gridPos\": { \"h\": 1, \"w\": 24, \"\
+    x\": 0, \"y\": 0 },\n      \"id\": 100,\n      \"title\": \"Log Stream Metrics\
+    \ & Ingestion\",\n      \"type\": \"row\"\n    },\n    {\n      \"datasource\"\
+    : { \"type\": \"loki\", \"uid\": \"loki\" },\n      \"fieldConfig\": {\n     \
+    \   \"defaults\": {\n          \"custom\": {\n            \"drawStyle\": \"bars\"\
+    ,\n            \"fillOpacity\": 80,\n            \"lineWidth\": 1\n          },\n\
+    \          \"unit\": \"short\"\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": { \"h\": 6, \"w\": 24, \"x\": 0, \"y\": 1 },\n      \"id\"\
+    : 1,\n      \"options\": {\n        \"legend\": { \"displayMode\": \"list\", \"\
+    placement\": \"bottom\" },\n        \"tooltip\": { \"mode\": \"single\" }\n  \
+    \    },\n      \"pluginVersion\": \"10.4.2\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": { \"type\": \"loki\", \"uid\": \"loki\" },\n      \
+    \    \"editorMode\": \"code\",\n          \"expr\": \"sum by (app) (count_over_time({namespace=\\\
+    \"default\\\"}[1m]))\",\n          \"legendFormat\": \"{{app}}\",\n          \"\
+    queryType\": \"range\",\n          \"refId\": \"A\"\n        }\n      ],\n   \
+    \   \"title\": \"Log Ingestion Rate (Lines/min by App)\",\n      \"type\": \"\
+    timeseries\"\n    },\n    {\n      \"collapsed\": false,\n      \"gridPos\": {\
+    \ \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 7 },\n      \"id\": 101,\n      \"title\"\
+    : \"LiveKit SFU Signaling & Engine Logs\",\n      \"type\": \"row\"\n    },\n\
+    \    {\n      \"datasource\": { \"type\": \"loki\", \"uid\": \"loki\" },\n   \
+    \   \"gridPos\": { \"h\": 10, \"w\": 24, \"x\": 0, \"y\": 8 },\n      \"id\":\
+    \ 2,\n      \"options\": {\n        \"dedupStrategy\": \"none\",\n        \"enableLogDetails\"\
+    : true,\n        \"prettifyLogMessage\": false,\n        \"showCommonLabels\"\
+    : false,\n        \"showLabels\": true,\n        \"sortOrder\": \"Descending\"\
+    ,\n        \"wrapLogMessage\": true\n      },\n      \"pluginVersion\": \"10.4.2\"\
+    ,\n      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"loki\"\
+    , \"uid\": \"loki\" },\n          \"editorMode\": \"code\",\n          \"expr\"\
+    : \"{namespace=\\\"default\\\", app=\\\"livekit-server\\\"}\",\n          \"queryType\"\
+    : \"range\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\"\
+    : \"LiveKit SFU Container Logs (livekit-server)\",\n      \"type\": \"logs\"\n\
+    \    },\n    {\n      \"collapsed\": false,\n      \"gridPos\": { \"h\": 1, \"\
+    w\": 24, \"x\": 0, \"y\": 18 },\n      \"id\": 102,\n      \"title\": \"Next.js\
+    \ Client & Frontend Logs\",\n      \"type\": \"row\"\n    },\n    {\n      \"\
+    datasource\": { \"type\": \"loki\", \"uid\": \"loki\" },\n      \"gridPos\": {\
+    \ \"h\": 10, \"w\": 24, \"x\": 0, \"y\": 19 },\n      \"id\": 3,\n      \"options\"\
+    : {\n        \"dedupStrategy\": \"none\",\n        \"enableLogDetails\": true,\n\
+    \        \"prettifyLogMessage\": false,\n        \"showCommonLabels\": false,\n\
+    \        \"showLabels\": true,\n        \"sortOrder\": \"Descending\",\n     \
+    \   \"wrapLogMessage\": true\n      },\n      \"pluginVersion\": \"10.4.2\",\n\
+    \      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"loki\"\
+    , \"uid\": \"loki\" },\n          \"editorMode\": \"code\",\n          \"expr\"\
+    : \"{namespace=\\\"default\\\", app=\\\"livekit-client\\\"}\",\n          \"queryType\"\
+    : \"range\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\"\
+    : \"Next.js Frontend Container Logs (livekit-client)\",\n      \"type\": \"logs\"\
+    \n    },\n    {\n      \"collapsed\": false,\n      \"gridPos\": { \"h\": 1, \"\
+    w\": 24, \"x\": 0, \"y\": 29 },\n      \"id\": 103,\n      \"title\": \"Unified\
+    \ LiveKit Signaling & Error Stream\",\n      \"type\": \"row\"\n    },\n    {\n\
+    \      \"datasource\": { \"type\": \"loki\", \"uid\": \"loki\" },\n      \"gridPos\"\
+    : { \"h\": 10, \"w\": 24, \"x\": 0, \"y\": 30 },\n      \"id\": 4,\n      \"options\"\
+    : {\n        \"dedupStrategy\": \"none\",\n        \"enableLogDetails\": true,\n\
+    \        \"prettifyLogMessage\": false,\n        \"showCommonLabels\": false,\n\
+    \        \"showLabels\": true,\n        \"sortOrder\": \"Descending\",\n     \
+    \   \"wrapLogMessage\": true\n      },\n      \"pluginVersion\": \"10.4.2\",\n\
+    \      \"targets\": [\n        {\n          \"datasource\": { \"type\": \"loki\"\
+    , \"uid\": \"loki\" },\n          \"editorMode\": \"code\",\n          \"expr\"\
+    : \"{namespace=\\\"default\\\"} |~ \\\"(?i)error|warn|fail|panic|exception\\\"\
+    \",\n          \"queryType\": \"range\",\n          \"refId\": \"A\"\n       \
+    \ }\n      ],\n      \"title\": \"Default Namespace Errors & Warnings\",\n   \
+    \   \"type\": \"logs\"\n    }\n  ],\n  \"refresh\": \"5s\",\n  \"schemaVersion\"\
+    : 38,\n  \"tags\": [\"logs\", \"loki\", \"livekit\", \"explorer\"],\n  \"time\"\
+    : { \"from\": \"now-1h\", \"to\": \"now\" },\n  \"timepicker\": { \"refresh_intervals\"\
+    : [\"5s\", \"10s\", \"30s\", \"1m\"] },\n  \"timezone\": \"browser\",\n  \"title\"\
+    : \"Unified Log Explorer - LiveKit & Cluster Logs\",\n  \"uid\": \"unified-log-explorer\"\
+    ,\n  \"version\": 1\n}\n"

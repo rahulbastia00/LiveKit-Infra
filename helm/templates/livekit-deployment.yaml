@@ -15,6 +15,10 @@ spec:
     metadata:
       labels:
         app: livekit-server
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.livekit.ports.prometheus | default 6789 }}"
+        prometheus.io/path: "/metrics"
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -35,6 +39,9 @@ spec:
             - name: udprtc
               containerPort: {{ .Values.livekit.ports.udpStart }}
               protocol: UDP
+            - name: metrics
+              containerPort: {{ .Values.livekit.ports.prometheus | default 6789 }}
+              protocol: TCP
           volumeMounts:
             - name: config-volume
               mountPath: /etc/livekit.yaml
@@ -52,6 +59,8 @@ data:
   livekit.yaml: |
     port: {{ .Values.livekit.ports.http }}
     log_level: info
+    prometheus:
+      port: {{ .Values.livekit.ports.prometheus | default 6789 }}
     rtc:
       tcp_port: {{ .Values.livekit.ports.tcpRtc }}
       port_range_start: {{ .Values.livekit.ports.udpStart }}

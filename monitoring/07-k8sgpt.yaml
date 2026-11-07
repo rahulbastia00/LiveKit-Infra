@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k8sgpt-secret
+  namespace: k8sgpt-operator-system
+type: Opaque
+stringData:
+  openai-api-key: API_KEY
+---
+apiVersion: core.k8sgpt.ai/v1alpha1
+kind: K8sGPT
+metadata:
+  name: k8sgpt
+  namespace: k8sgpt-operator-system
+spec:
+  ai:
+    enabled: true
+    model: meta-llama/llama-3.1-8b-instruct
+    backend: openai
+    baseUrl: https://openrouter.ai/api/v1
+    secret:
+      name: k8sgpt-secret
+      key: openai-api-key
+  noCache: false
+  repository: ghcr.io/k8sgpt-ai/k8sgpt
+  version: v0.4.41
+
